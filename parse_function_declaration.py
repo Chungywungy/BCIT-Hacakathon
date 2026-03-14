@@ -1,69 +1,88 @@
-
 """
 Assumption: 
 functions must be annotated with variable and return type. 
 
 def function_name(x: int, y: float) -> int:
+def function_name() -> str:
+def function_name():
 """
+
+
 def parse_function_declaration(function_string):
-    # get the function name
+    """
+
+    :param function_string:
+    :return:
+    """
+    # removes def from the string
     if "def" in function_string:
         function_string = function_string.replace("def", "")
 
-        #split return type value
-        if "->" in function_string:
-            return_type = function_string.split("->")
-            return_type = return_type[1].replace(":", "").strip()
-            # print(f"return type: {return_type}")
+    # get the return type
+    if "->" in function_string:
+        return_type = function_string.split("->")
+        return_type = return_type[1].replace(":", "").strip()
+        # this gets the return type of the function
+    else:
+        return_type = None  # return type is None when the function_string does not include the return annotation
 
-        function_string = function_string.split("(")
-        function_name = function_string[0].strip()
-        # print(f"{function_name} is declared as a function")
+    # get the function name
+    function_string = function_string.split("(")
+    function_name = function_string[0].strip()
+    # splits string at ( to get the function name
 
-    #get parameters
-    function_string = function_string[1]
-    parameters = function_string.split("->")
+    # get parameters
+    parameters = function_string[1].split(")")
     parameters = parameters[0]
-    parameters = parameters.replace(")", "")
-    # print("parameters:", parameters)
+    # split at the ')' to get everything in between the parentheses; the '(' should already be gone
 
-    if parameters:
-        parameters_list = parameters.split(",") # returns a list of variables and function annotations
-        # print("parameters:", parameters_list)
+    if parameters:  # runs if there are parameters
+        parameters_list = parameters.split(",")  # returns a list of variables and function annotations
 
-        #parse parameters
+        #parse parameters; create dictionary to hold each parameter and its type
         variable_type_dict = {}
         for item in parameters_list:
             item.strip()
-            
+
             if ":" in item:
-                variable_type = item.split(":")
-                # print(f"variable_type: {variable_type}")
-                variable = variable_type[0].strip()
-                type = variable_type[1].strip()
-                variable_type_dict[variable] = type
-                # print(variable_type_dict)
+                parameter_annotation = item.split(":")
+                variable = parameter_annotation[0].strip()  # this gets the variable that will become the key in dict
+                variable_type = parameter_annotation[1].strip()  # this is the variable type that will be the value pair
+                variable_type_dict[variable] = variable_type
 
         # iterating through the variables to create a list to hold parameter descriptions
         parameter_description = []
         for key, value in variable_type_dict.items():
             parameter_description.append(f"{key} as {value}")
-        # print(parameter_description)
+        # creates list to hold parameter descriptions i.e. ['x as int, y as float']
 
-    if parameters == "":
-        parameter_text = "no parameters"
+        parameter_text = ", ".join(parameter_description)  # turn the parameter list into a one line string
     else:
-        parameter_text = ", ".join(parameter_description)
+        parameter_text = "no parameters"
 
-    function_declaration_string = f"{function_name} is declared as a function. It takes {parameter_text} and returns {return_type}."
+    if return_type:  # runs if there is a return type
+        function_declaration_string = (f"{function_name} is declared as a function. It takes {parameter_text} and "
+                                       f"returns {return_type}.")
+    else:  #runs if there return type is None
+        function_declaration_string = f"{function_name} is declared as a function. It takes {parameter_text}."
+
     # print(function_declaration_string)
-    
+
     return function_declaration_string
 
 
 def main():
-    parse_function_declaration("def function_name(x: int, y: float) -> int:")
+    """
+    Drive the function.
+    """
+    # with parameters
+    parse_function_declaration("def function_name(x: int, y: float, z: str) -> int:")
 
+    #without parameters
+    parse_function_declaration("def another_function() -> int:")
+
+    #without parameters and return annotation
+    parse_function_declaration("def wow_another_one():")
 
 
 if __name__ == "__main__":
