@@ -2,7 +2,19 @@ import identify_operation
 import identify_assignment
 
 
-def parse_logical_operators(split_string, operator):
+def parse_logical_operators(split_string:str , operator:str ) -> list:
+    """
+    Divide a string by the operator in the string.
+
+    :param split_string: string representing a line of code
+    :param operator: is a logical or a membership operator
+    :postcondition: convert the split_string into a list
+    :postcondition: make a copy of this list
+    :postcondition: find the location of the operator
+    :postcondition: pop the elements in the copied list to form the second operand
+    :postcondition: move each popped element into a new list to form the right operand
+    :return: list containing right operands and left operands
+    """
     parts = split_string.split()
     logical_operator_location = parts.index(operator)
     index = 0
@@ -21,25 +33,41 @@ def parse_logical_operators(split_string, operator):
     return [first_operand, second_operand]
 
 
-def identify_logical_operators(split_string: str):
+def identify_comparison_operators(split_string: str):
+    """
+    Recursively identify and explain the comparison operators in an expression in a plain English( a line of code).
+
+    :param split_string: string representing a line of code
+    :precondition: split_string is a correctly formatted string
+    :postcondition: find the comparison operator and pride English description of the comparison,
+                    assignment, or arithmetic operation found in split_string
+    :postcondition: recursively processes split_string by splitting on the first
+                    comparison operator found, formatting the left side into plain
+                    English, and passing the right side back into itself until no
+                    comparison operators remain; the base case delegates to
+                    identify_assignment or identify_operations
+    :return: a plain English string describing the full expression as a string or a call to assignment
+             function if it's a simple assignment (=), or call to identify operation function to check
+             for any other operations that could be in an expression
+    """
     if "==" in split_string:
         result = parse_logical_operators(split_string, "==")
-        return "{} is equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "!=" in split_string:
         result = parse_logical_operators(split_string, "!=")
-        return "{} is not equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is not equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "<=" in split_string:
         result = parse_logical_operators(split_string, "<=")
-        return "{} is less than or equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is less than or equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif ">=" in split_string:
         result = parse_logical_operators(split_string, ">=")
-        return "{} is greater than or equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is greater than or equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "<" in split_string:
         result = parse_logical_operators(split_string, "<")
-        return "{} is less than {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is less than {}".format(result[0], identify_comparison_operators(result[1]))
     elif ">" in split_string:
         result = parse_logical_operators(split_string, ">")
-        return "{} is greater than {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is greater than {}".format(result[0], identify_comparison_operators(result[1]))
     elif "=" in split_string:
         if identify_assignment.identify_assignment(split_string):
             return identify_assignment.print_assignment(split_string)
@@ -47,7 +75,28 @@ def identify_logical_operators(split_string: str):
         return identify_operation.identify_operations(split_string)
 
 
-def identify_membership_operators(split_string):
+def identify_membership_operators(split_string:str ):
+    """
+    Recursively identify and explain membership operations in an expression.
+
+    Checks for operators in the order not, and, or, is, in.
+    Splits the expression on the first operator found, recursively processes
+    both sides, and combines them into a plain English description.
+    If none of these operators are present, call
+    identify_comparison_operators as the base case, which will investigate any other operations that
+    might be seen in the expression such as comparison, math operations etc.
+
+    :param split_string:  string representing a line of code
+    :precondition: correctly formatted string representing a valid Python expression
+    :postcondition: recursively splits split_string on the first membership or
+                    logical operator found, processes the left and right sides
+                    independently, and combines them into a plain English string
+    :postcondition: correctly handle partial expressions where one side may be None by
+                    returning only the non-None side with the other operator
+    :return: a plain English string describing the full expression built
+             recursively, or call to comparison operators function to check for any other
+             operations in the expressions from there
+    """
     parts = split_string.split()
     if "not" in parts:
         not_index = parts.index("not")
@@ -116,24 +165,27 @@ def identify_membership_operators(split_string):
         else:
             return "{} in {}".format(first_operand, second_operand)
     else:
-        return identify_logical_operators(split_string)
+        return identify_comparison_operators(split_string)
 
 
 
 def main():
+    """
+    Drive the program.
+    """
     print(identify_membership_operators("x not in y"))
     print(identify_membership_operators("x not y"))
     print(identify_membership_operators("x in y"))
     print(identify_membership_operators("x in y and x is not z or is x and not p"))
-    print(identify_logical_operators("x == y"))
-    print(identify_logical_operators("x != y"))
-    print(identify_logical_operators("x <= y"))
-    print(identify_logical_operators("x >= y"))
-    print(identify_logical_operators("x = y"))
-    print(identify_logical_operators("x + y"))
-    print(identify_logical_operators("x == y + z * 3"))
-    print(identify_logical_operators("x > y"))
-    print(identify_logical_operators("x < y"))
+    print(identify_comparison_operators("x == y"))
+    print(identify_comparison_operators("x != y"))
+    print(identify_comparison_operators("x <= y"))
+    print(identify_comparison_operators("x >= y"))
+    print(identify_comparison_operators("x = y"))
+    print(identify_comparison_operators("x + y"))
+    print(identify_comparison_operators("x == y + z * 3"))
+    print(identify_comparison_operators("x > y"))
+    print(identify_comparison_operators("x < y"))
 
 
 if __name__ == "__main__":
