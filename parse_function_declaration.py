@@ -1,6 +1,8 @@
 """
+Parses functions declarations and annotations.
+
 Assumption: 
-functions must be annotated with variable and return type. 
+Only parses annotations when available
 
 def function_name(x: int, y: float) -> int:
 def function_name(x, y):
