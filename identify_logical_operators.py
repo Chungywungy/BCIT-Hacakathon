@@ -1,8 +1,12 @@
+"""
+This module identifies and explains logical operations and comparison operations in
+a line of a function.
+"""
 import identify_operation
 import identify_assignment
 
 
-def parse_logical_operators(split_string:str , operator:str ) -> list:
+def parse_logical_operators(split_string: str, operator: str) -> list:
     """
     Divide a string by the operator in the string.
 
@@ -75,7 +79,7 @@ def identify_comparison_operators(split_string: str):
         return identify_operation.identify_operations(split_string)
 
 
-def identify_membership_operators(split_string:str ):
+def identify_membership_operators(split_string: str):
     """
     Recursively identify and explain membership operations in an expression.
 
@@ -166,7 +170,6 @@ def identify_membership_operators(split_string:str ):
             return "{} in {}".format(first_operand, second_operand)
     else:
         return identify_comparison_operators(split_string)
-
 
 
 def main():
