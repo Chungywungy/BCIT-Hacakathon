@@ -2,7 +2,20 @@ import identify_operation
 import identify_assignment
 
 
-def parse_logical_operators(split_string, operator):
+def parse_logical_operators(split_string:str , operator:str ) -> list:
+    """
+    Divide a string by the operator in the string.
+
+    :param split_string: string representing a line of code
+    :param operator: is a logical or a membership operator
+    :precondition:
+    :postcondition: convert the split_string into a list
+    :postcondition: make a copy of this list
+    :postcondition: find the location of the operator
+    :postcondition: pop the elements in the copied list to form the second operand
+    :postcondition: move each popped element into a new list to form the right operand
+    :return: list containing right operands and left operands
+    """
     parts = split_string.split()
     logical_operator_location = parts.index(operator)
     index = 0
@@ -21,25 +34,31 @@ def parse_logical_operators(split_string, operator):
     return [first_operand, second_operand]
 
 
-def identify_logical_operators(split_string: str):
+def identify_comparison_operators(split_string: str):
+    """
+    Identify
+
+    :param split_string:
+    :return:
+    """
     if "==" in split_string:
         result = parse_logical_operators(split_string, "==")
-        return "{} is equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "!=" in split_string:
         result = parse_logical_operators(split_string, "!=")
-        return "{} is not equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is not equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "<=" in split_string:
         result = parse_logical_operators(split_string, "<=")
-        return "{} is less than or equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is less than or equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif ">=" in split_string:
         result = parse_logical_operators(split_string, ">=")
-        return "{} is greater than or equal to {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is greater than or equal to {}".format(result[0], identify_comparison_operators(result[1]))
     elif "<" in split_string:
         result = parse_logical_operators(split_string, "<")
-        return "{} is less than {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is less than {}".format(result[0], identify_comparison_operators(result[1]))
     elif ">" in split_string:
         result = parse_logical_operators(split_string, ">")
-        return "{} is greater than {}".format(result[0], identify_logical_operators(result[1]))
+        return "{} is greater than {}".format(result[0], identify_comparison_operators(result[1]))
     elif "=" in split_string:
         if identify_assignment.identify_assignment(split_string):
             return identify_assignment.print_assignment(split_string)
@@ -47,7 +66,12 @@ def identify_logical_operators(split_string: str):
         return identify_operation.identify_operations(split_string)
 
 
-def identify_membership_operators(split_string):
+def identify_membership_operators(split_string:str ):
+    """
+
+    :param split_string:
+    :return:
+    """
     parts = split_string.split()
     if "not" in parts:
         not_index = parts.index("not")
@@ -116,24 +140,27 @@ def identify_membership_operators(split_string):
         else:
             return "{} in {}".format(first_operand, second_operand)
     else:
-        return identify_logical_operators(split_string)
+        return identify_comparison_operators(split_string)
 
 
 
 def main():
+    """
+    Drive the program.
+    """
     print(identify_membership_operators("x not in y"))
     print(identify_membership_operators("x not y"))
     print(identify_membership_operators("x in y"))
     print(identify_membership_operators("x in y and x is not z or is x and not p"))
-    print(identify_logical_operators("x == y"))
-    print(identify_logical_operators("x != y"))
-    print(identify_logical_operators("x <= y"))
-    print(identify_logical_operators("x >= y"))
-    print(identify_logical_operators("x = y"))
-    print(identify_logical_operators("x + y"))
-    print(identify_logical_operators("x == y + z * 3"))
-    print(identify_logical_operators("x > y"))
-    print(identify_logical_operators("x < y"))
+    print(identify_comparison_operators("x == y"))
+    print(identify_comparison_operators("x != y"))
+    print(identify_comparison_operators("x <= y"))
+    print(identify_comparison_operators("x >= y"))
+    print(identify_comparison_operators("x = y"))
+    print(identify_comparison_operators("x + y"))
+    print(identify_comparison_operators("x == y + z * 3"))
+    print(identify_comparison_operators("x > y"))
+    print(identify_comparison_operators("x < y"))
 
 
 if __name__ == "__main__":

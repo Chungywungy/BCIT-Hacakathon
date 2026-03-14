@@ -24,7 +24,7 @@ def while_loop(split_string):
         cache = "".join(cache)
 
 
-        print(f'{identify_logical_operators(storage)} is true, it repeatedly executes'f' {identify_operations(cache)}.')
+        print(f'{identify_comparison_operators(storage)} is true, it repeatedly executes'f' {identify_operations(cache)}.')
     return
 
 
