@@ -9,14 +9,21 @@ def identify_assignment(split_string: list):
 def print_assignment(split_string_line: str):
     string_parts = split_string_line.split("=")
     assignee = string_parts[0]
-    index = 1
+    string_parts.pop(0)
+    index = 0
+    assigner = ""
+    while index < len(string_parts):
+        assigner = identify_operation.identify_operations(string_parts[index])
+        index += 1
 
-    assigner = identify_operation.identify_operations(string_parts)
     print(f"Sets {assignee} equal to {assigner}")
 
 
 def main():
     my_string = "def my_function(x, y): \n x = y"
+    my_split_string = my_string.split("\n")
+    identify_assignment(my_split_string)
+    my_string = "def my_function(x, y): \n x = y + z"
     my_split_string = my_string.split("\n")
     identify_assignment(my_split_string)
 
