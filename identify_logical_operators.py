@@ -55,33 +55,68 @@ def identify_membership_operators(split_string):
         first_operand = identify_membership_operators(result[0])
         second_operand = identify_membership_operators(result[1])
         if parts[not_index + 1] == "in":
-            return "{} is not {}".format(first_operand, second_operand)
-        else:
-            return "{} not {}".format(first_operand, second_operand)
-    else:
-        for term in parts:
-            if term == "and":
-                result = parse_logical_operators(split_string, "and")
-                first_operand = identify_membership_operators(result[0])
-                second_operand = identify_membership_operators(result[1])
-                return "{} and {}".format(first_operand, second_operand)
-            elif term == "or":
-                result = parse_logical_operators(split_string, "or")
-                first_operand = identify_membership_operators(result[0])
-                second_operand = identify_membership_operators(result[1])
-                return "{} or {}".format(first_operand, second_operand)
-            elif term == "is":
-                result = parse_logical_operators(split_string, "is")
-                first_operand = identify_membership_operators(result[0])
-                second_operand = identify_membership_operators(result[1])
-                return "{} is {}".format(first_operand, second_operand)
-            elif term == "in":
-                result = parse_logical_operators(split_string, "in")
-                first_operand = identify_membership_operators(result[0])
-                second_operand = identify_membership_operators(result[1])
-                return "{} is in {}".format(first_operand, second_operand)
+            if result[0] is None:
+                return "is not in {}".format(second_operand)
+            elif result[1] is None:
+                return "{} is not in".format(first_operand)
             else:
-                identify_logical_operators(term)
+                return "{} is not {}".format(first_operand, second_operand)
+        elif parts[not_index - 1] == "is":
+            if result[0] is None:
+                return "not {}".format(second_operand)
+            elif result[1] is None:
+                return "{} not".format(first_operand)
+            else:
+                return "{} not {}".format(first_operand, second_operand)
+        else:
+            if result[0] is None:
+                return "is not {}".format(second_operand)
+            elif result[1] is None:
+                return "{} is not".format(first_operand)
+            else:
+                return "{} is not {}".format(first_operand, second_operand)
+    elif "and" in parts:
+        result = parse_logical_operators(split_string, "and")
+        first_operand = identify_membership_operators(result[0])
+        second_operand = identify_membership_operators(result[1])
+        if result[0] is None:
+            return "and {}".format(second_operand)
+        elif result[1] is None:
+            return "{} and".format(first_operand)
+        else:
+            return "{} and {}".format(first_operand, second_operand)
+    elif "or" in parts:
+        result = parse_logical_operators(split_string, "or")
+        first_operand = identify_membership_operators(result[0])
+        second_operand = identify_membership_operators(result[1])
+        if result[0] is None:
+            return "or {}".format(second_operand)
+        elif result[1] is None:
+            return "{} or".format(first_operand)
+        else:
+            return "{} or {}".format(first_operand, second_operand)
+    elif "is" in parts:
+        result = parse_logical_operators(split_string, "is")
+        first_operand = identify_membership_operators(result[0])
+        second_operand = identify_membership_operators(result[1])
+        if result[0] is None:
+            return "is {}".format(second_operand)
+        elif result[1] is None:
+            return "{} is".format(first_operand)
+        else:
+            return "{} is {}".format(first_operand, second_operand)
+    elif "in" in parts:
+        result = parse_logical_operators(split_string, "in")
+        first_operand = identify_membership_operators(result[0])
+        second_operand = identify_membership_operators(result[1])
+        if result[0] is None:
+            return "in {}".format(second_operand)
+        elif result[1] is None:
+            return "{} in".format(first_operand)
+        else:
+            return "{} in {}".format(first_operand, second_operand)
+    else:
+        return identify_logical_operators(split_string)
 
 
 
@@ -89,6 +124,7 @@ def main():
     print(identify_membership_operators("x not in y"))
     print(identify_membership_operators("x not y"))
     print(identify_membership_operators("x in y"))
+    print(identify_membership_operators("x in y and x is not z"))
     print(identify_logical_operators("x == y"))
     print(identify_logical_operators("x != y"))
     print(identify_logical_operators("x <= y"))
@@ -98,7 +134,7 @@ def main():
     print(identify_logical_operators("x == y + z * 3"))
     print(identify_logical_operators("x > y"))
     print(identify_logical_operators("x < y"))
-    print(identify_membership_operators("x in y and x is not z"))
+
 
 if __name__ == "__main__":
     main()
