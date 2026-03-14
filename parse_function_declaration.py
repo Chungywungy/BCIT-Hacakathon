@@ -17,7 +17,6 @@ def get_return_type(function_string):
     :param function_string:
     :return:
     """
-    # get the return type
     if "def" and "->" in function_string:
         return_type = function_string.split("->")
         return_type = return_type[1].replace(":", "").strip()
@@ -111,8 +110,6 @@ def parse_function_declaration(function_string):
     else:  #runs if there return type is None
         function_declaration_string = f"{function_name} is declared as a function. It takes {parameter_text}."
 
-    print(function_declaration_string)
-
     return function_declaration_string
 
 
@@ -120,7 +117,7 @@ def main():
     """
     Drive the function.
     """
-    # with parameters
+    # with parameters and annotations
     parse_function_declaration("def function_name(x: int, y: float, z: str) -> int:")
 
     # with parameters without annotations
