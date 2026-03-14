@@ -93,6 +93,9 @@ def main():
     # with parameters without annotations
     parse_function_declaration("def function_name(x, y) -> int:")
 
+    # with parameters without annotations, without return annotation
+    parse_function_declaration("def function_name(x, y)")
+
     #without parameters
     parse_function_declaration("def another_function() -> int:")
 
