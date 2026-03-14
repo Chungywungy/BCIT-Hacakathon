@@ -8,7 +8,6 @@ def parse_logical_operators(split_string:str , operator:str ) -> list:
 
     :param split_string: string representing a line of code
     :param operator: is a logical or a membership operator
-    :precondition:
     :postcondition: convert the split_string into a list
     :postcondition: make a copy of this list
     :postcondition: find the location of the operator
@@ -36,10 +35,20 @@ def parse_logical_operators(split_string:str , operator:str ) -> list:
 
 def identify_comparison_operators(split_string: str):
     """
-    Identify
+    Recursively identify and explain the comparison operators in an expression in a plain English( a line of code).
 
-    :param split_string:
-    :return:
+    :param split_string: string representing a line of code
+    :precondition: split_string is a correctly formatted string
+    :postcondition: find the comparison operator and pride English description of the comparison,
+                    assignment, or arithmetic operation found in split_string
+    :postcondition: recursively processes split_string by splitting on the first
+                    comparison operator found, formatting the left side into plain
+                    English, and passing the right side back into itself until no
+                    comparison operators remain; the base case delegates to
+                    identify_assignment or identify_operations
+    :return: a plain English string describing the full expression as a string or a call to assignment
+             function if it's a simple assignment (=), or call to identify operation function to check
+             for any other operations that could be in an expression
     """
     if "==" in split_string:
         result = parse_logical_operators(split_string, "==")
@@ -68,9 +77,25 @@ def identify_comparison_operators(split_string: str):
 
 def identify_membership_operators(split_string:str ):
     """
+    Recursively identify and explain membership operations in an expression.
 
-    :param split_string:
-    :return:
+    Checks for operators in the order not, and, or, is, in.
+    Splits the expression on the first operator found, recursively processes
+    both sides, and combines them into a plain English description.
+    If none of these operators are present, call
+    identify_comparison_operators as the base case, which will investigate any other operations that
+    might be seen in the expression such as comparison, math operations etc.
+
+    :param split_string:  string representing a line of code
+    :precondition: correctly formatted string representing a valid Python expression
+    :postcondition: recursively splits split_string on the first membership or
+                    logical operator found, processes the left and right sides
+                    independently, and combines them into a plain English string
+    :postcondition: correctly handle partial expressions where one side may be None by
+                    returning only the non-None side with the other operator
+    :return: a plain English string describing the full expression built
+             recursively, or call to comparison operators function to check for any other
+             operations in the expressions from there
     """
     parts = split_string.split()
     if "not" in parts:
