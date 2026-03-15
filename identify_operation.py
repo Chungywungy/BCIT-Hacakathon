@@ -18,12 +18,10 @@ def return_operations(split_string: str, operator: str) -> list:
     :return: a two-element list, the first operand (immediately left
              of the operator) and the second operand (all remaining tokens joined).
     """
-    parts = split_string.split()
-    operator_position = parts.index(operator)
-    first_operand = parts[operator_position - 1]
-    parts.pop(operator_position - 1)
-    parts.pop(parts.index(operator))
-    second_operand = " ".join(parts)
+    parts = split_string.split(operator)
+    first_operand = parts[0].strip()
+    second_operand = parts[1].strip()
+
     return [first_operand, second_operand]
 
 def identify_operations(split_string: str) -> str:

@@ -13,7 +13,7 @@ def try_and_except(split_string):
             return f"The function will raise an {error[0]} with message, {error_message}."
         elif "except" in term:
             lines[1] = lines[1].replace(":", "")
-            return f"If the function fails to perform these actions a {lines[1]} will occur, so the function will:"
+            return f"If the function fails to perform these actions a {lines[1]} will occur, so the function:"
         elif "finally:" == term:
             return "Finally, the function will:"
         else:

@@ -30,7 +30,7 @@ def replaces_function_calls(line):
             # stops at the index of the first parameter passed
             start = remaining.index(basic_function + "(") + len(basic_function) + 1
             # starts looking for the closing  from the start index
-            end = remaining.index(")", start)
+            end = remaining.rindex(")", start)
             # slices the line to parse argument
             args = remaining[start: end].strip()
             function_call = remaining[function_call_index: end + 1]

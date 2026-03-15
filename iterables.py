@@ -1,13 +1,13 @@
-from identify_operation import *
 from identify_logical_operators import *
 from identify_functions import *
+from try_except import *
 
 def while_loop(split_string: str) -> str | None:
     if "while" in split_string:
         storage = split_string.split(":")[0].split("while")[1].strip()
 
 
-        return (f'While {replaces_function_calls(identify_comparison_operators(storage))} is true, it repeatedly executes'
+        return (f'While {replaces_function_calls(identify_comparison_operators(storage))} is true, it repeatedly '
                 f' {continuation(split_string)}{breaker(split_string)}')
 
 
@@ -23,8 +23,7 @@ def for_loop(split_string: str) -> str | None:
 def continuation(split_string):
     if "continue" in split_string:
         return f"the loop then goes to the top and begins again "
-    else:
-        return ""
+    return ""
 
 def breaker(split_string):
     if "break" in split_string:
@@ -41,7 +40,7 @@ def conditionals(split_string: list):
     lambdamentality = {
         "if": lambda statement: f"checks {replaces_function_calls(identify_comparison_operators(statement))} then ",
         "elif": lambda statement: f"otherwise it checks {replaces_function_calls(identify_comparison_operators(statement))} then ",
-        "else": lambda statement: f"if none of these conditions are true it executes "
+        "else": lambda statement: f"if none of these conditions are true it "
     }
 
     container = []
@@ -60,9 +59,28 @@ def conditionals(split_string: list):
                 container.append(while_output)
                 non_applicable = True
                 break
+
             for_output = for_loop(line)
             if for_output:
                 container.append(for_output)
+                non_applicable = True
+                break
+
+            continuation_output = continuation(line)
+            if continuation_output:
+                container.append(continuation_output+"\n")
+                non_applicable = True
+                break
+
+            breaker_output = breaker(line)
+            if breaker_output:
+                container.append(breaker_output+"\n")
+                non_applicable = True
+                break
+
+            try_except_output = try_and_except(line)
+            if try_except_output:
+                container.append(try_except_output+"\n")
                 non_applicable = True
                 break
 
