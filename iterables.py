@@ -8,7 +8,7 @@ def while_loop(split_string: str) -> str | None:
 
 
         return (f'While {replaces_function_calls(identify_comparison_operators(storage))} is true, it repeatedly '
-                f' {continuation(split_string)}{breaker(split_string)}')
+                f' {continuation(split_string)}{breaker(split_string)}{passer(split_string)}')
 
 
 def for_loop(split_string: str) -> str | None:
@@ -17,7 +17,7 @@ def for_loop(split_string: str) -> str | None:
         if split_string[idx + len("for")].isalpha(): return None
         split_string = split_string.split()
         return (f"Iterates through each {split_string[1]} in the {replaces_function_calls(split_string[3].replace(":", ""))} using a for loop. "
-                f"{continuation(split_string)}{breaker(split_string)} ")
+                f"{continuation(split_string)}{breaker(split_string)}{passer(split_string)} ")
 
 
 def continuation(split_string):
@@ -33,7 +33,9 @@ def breaker(split_string):
 
 def passer(split_string):
     if "pass" in split_string:
-        pass
+        return ""
+    else:
+        return ""
 
 
 def conditionals(split_string: list):
@@ -78,6 +80,12 @@ def conditionals(split_string: list):
                 non_applicable = True
                 break
 
+            passer_output = passer(line)
+            if passer_output:
+                container.append(passer_output+"\n")
+                non_applicable = True
+                break
+
             try_except_output = try_and_except(line)
             if try_except_output:
                 container.append(try_except_output+"\n")
@@ -94,7 +102,7 @@ def conditionals(split_string: list):
 
 def main():
     code_block_conditionals = ["if 1 > int(2):", "do_anything()", "elif 1 < range(2):", "please_work()", "else:", "1 + 2"]
-    sample = ["while number > 1: break"]
+    sample = ["while number > 1: pass"]
     return conditionals(sample)
 
 if __name__ == "__main__":
