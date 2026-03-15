@@ -2,7 +2,7 @@ import parse_function_declaration
 import iterables
 
 
-def main():
+def generate():
     print("Enter/Paste your content. Type \" END \" or press Ctrl-D or Ctrl-Z on windows to save it.")
     contents = []
     while True:
@@ -21,6 +21,10 @@ def main():
 
     print(line1)
     print(result)
+
+def main():
+    generate()
+    return
 
 if __name__ == "__main__":
     main()
