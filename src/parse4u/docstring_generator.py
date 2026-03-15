@@ -3,7 +3,7 @@ from .iterables import conditionals
 
 
 def generate():
-    print("Enter/Paste your content. Type \" END \" or press Ctrl-D or Ctrl-Z on windows to save it.")
+    print("Enter/Paste non-built-in Python function code. Type \" END \" or press Ctrl-D to save it.")
     contents = []
     while True:
         try:
