@@ -2,7 +2,6 @@ from identify_operation import *
 from identify_logical_operators import *
 from identify_functions import *
 
-
 def while_loop(split_string):
     if "while" in split_string:
         storage = []
@@ -25,71 +24,54 @@ def while_loop(split_string):
         cache = "".join(cache)
 
 
-        print(f'{identify_comparison_operators(storage)} is true, it repeatedly executes'f' {identify_operations(cache)}.')
-    return
+        return f'{identify_comparison_operators(storage)} is true, it repeatedly executes'f' {identify_operations(cache)}.'
 
 
 def for_loop(split_string):
     if "for" in split_string:
         split_string = split_string.split()
-        print(f"Iterates through each {split_string[1]} in the {split_string[3].replace(":", "")} using a for loop.")
-    return
+        return f"Iterates through each {split_string[1]} in the {split_string[3].replace(":", "")} using a for loop."
 
 def conditionals(split_string):
-    if "if" in split_string:
-        storage = []
-        for letter in split_string:
-            if letter != ":":
-                storage.append(letter)
-            else:
+    lambdamentality = {
+        "if": lambda statement: f"checks {replaces_function_calls(identify_comparison_operators(statement))} then",
+        "elif": lambda statement: f"otherwise it checks {replaces_function_calls(identify_comparison_operators(statement))} then",
+        "else": lambda statement: f"if none of these conditions are true it gets"
+    }
+
+    container = []
+
+    split = split_string.split("\n")
+    for line in split:
+        contains_cond = False
+        for cond in {"elif", "else", "if" }:
+            if cond in line:
+                argument = line[len(cond):].strip().split(":")[0]
+                container.append(f"{lambdamentality[cond](argument)}" )
+                contains_cond = True
                 break
-        storage = "".join(storage)
 
-    print(f"checks {replaces_function_calls(identify_comparison_operators(storage))}")
+            while_output = while_loop(line)
+            if while_output:
+                container.append(while_output)
+                break
+            for_output = for_loop(line)
+            if for_output:
+                container.append(for_output)
+                break
+        if not contains_cond:
+            value = replaces_function_calls(identify_comparison_operators(line))
+            container.append(value.strip()+"\n")
 
-    if "elif" in split_string:
-        colon_checker = True
-        value = 'elif'
-        elif_checker = split_string.index(value)
-        elif_storage = []
 
-        big_list = split_string[elif_checker + 2:]
-        for letter in big_list:
-            if colon_checker:
-                elif_storage.append(letter)
-            if letter == ":":
-                colon_checker = False
-
-        elif_storage = "".join(elif_storage[:-1])
-
-        print(f"otherwise it checks {replaces_function_calls(identify_comparison_operators(elif_storage))}")
-
-    if "else" in split_string:
-        colon_checker = False
-        value = 'else'
-        else_checker = split_string.index(value)
-        else_storage = []
-
-        big_list = split_string[else_checker + 2:]
-        for letter in big_list:
-            if colon_checker:
-                else_storage.append(letter)
-            if letter == ":":
-                colon_checker = True
-
-        else_storage = "".join(else_storage)
-
-        print(f"if none of these conditions are true it gets {replaces_function_calls(identify_comparison_operators(else_storage))}")
-
-    return replaces_function_calls(split_string)
+    return " ".join(container)
 
 
 def main():
     code_block_while_loop = "while alakazam > 1: \n  abra + cadabra"
     code_block_for_loop = "for abra in cadabra: \n  do_something()"
-    code_block_conditionals = "if 1 > int(2): \n do_anything() \n elif 1 < range(2): please_work() \n else: 1 + 2"
-    return while_loop(code_block_while_loop), for_loop(code_block_for_loop), conditionals(code_block_conditionals)
-
+    code_block_conditionals = "if 1 > int(2): \n do_anything() \n elif 1 < range(2):\n please_work() \n else: \n1 + 2"
+    return conditionals(code_block_conditionals)
 
 if __name__ == "__main__":
-    main()
+    print(main())
