@@ -57,10 +57,13 @@ def get_parameters(function_string: str) -> str:
     :postcondition: translate the text for the parameters
     :return: a description of the parameters as the string
     """
-    left_split_function_string = function_string.split("(")
+    if "(" not in function_string or ")" not in function_string:
+        return "no parameters"
 
-    right_split_function_string = left_split_function_string[1].split(")")
+    left_split_function_string = function_string.split("(", 1)
+    right_split_function_string = left_split_function_string[1].split(")", 1)
     parameters = right_split_function_string[0]
+
     # split at the '(' and ')' to get everything in between the parentheses
 
     if parameters and ":" in parameters:  # runs if there are parameters with annotations
