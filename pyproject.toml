@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=80.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "parse4u"
+version = "1.0.0"
+description = "converts python language into plain english"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { text = "MIT" }
+authors = [
+  { name = "Fawaz Shariff", email = "placeholder0254@gmail.com" }
+]
+requires-python = ">=3.12"
+
+dependencies = [
+
+]
+
+keywords = ["automation", "parsing", "Summarizing"]
+
+[project.urls]
+Homepage = "https://github.com/Chungywungy/BCIT-Hacakathon"
+Documentation = "https://github.com/Chungywungy/BCIT-Hacakathon"
+Source = "https://github.com/Chungywungy/BCIT-Hacakathon/tree/main/src/parse4u"
+Issues = ""
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.scripts]
