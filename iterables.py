@@ -35,7 +35,8 @@ def for_loop(split_string):
         print(f"Iterates through each {split_string[1]} in the {split_string[3].replace(":", "")} using a for loop.")
     return
 
-def conditionals(split_string):
+
+def conditionals_if(split_string):
     if "if" in split_string:
         storage = []
         for letter in split_string:
@@ -45,8 +46,11 @@ def conditionals(split_string):
                 break
         storage = "".join(storage)
 
-    print(f"checks {replaces_function_calls(identify_comparison_operators(storage))}")
+        print(f"checks {replaces_function_calls(identify_comparison_operators(storage))}")
+    return
 
+
+def conditionals_elif(split_string):
     if "elif" in split_string:
         colon_checker = True
         value = 'elif'
@@ -63,7 +67,10 @@ def conditionals(split_string):
         elif_storage = "".join(elif_storage[:-1])
 
         print(f"otherwise it checks {replaces_function_calls(identify_comparison_operators(elif_storage))}")
+    return
 
+
+def conditionals_else(split_string):
     if "else" in split_string:
         colon_checker = False
         value = 'else'
@@ -80,14 +87,21 @@ def conditionals(split_string):
         else_storage = "".join(else_storage)
 
         print(f"if none of these conditions are true it gets {replaces_function_calls(identify_comparison_operators(else_storage))}")
+    return
 
-    return replaces_function_calls(split_string)
+
+def conditionals(split_string):
+    conditionals_if(split_string)
+    conditionals_elif(split_string)
+    conditionals_else(split_string)
+    return
+
 
 
 def main():
     code_block_while_loop = "while alakazam > 1: \n  abra + cadabra"
     code_block_for_loop = "for abra in cadabra: \n  do_something()"
-    code_block_conditionals = "if 1 > int(2): \n do_anything() \n elif 1 < range(2): please_work() \n else: 1 + 2"
+    code_block_conditionals = "if True: \n x + 1 \n elif 1 < range(2): please_work() \n else: 1 + 2"
     return while_loop(code_block_while_loop), for_loop(code_block_for_loop), conditionals(code_block_conditionals)
 
 
